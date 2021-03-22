@@ -29,8 +29,10 @@ const GuessedWords = (props) => {
                 </tr>
               );
             })}
+            <tr></tr>
           </tbody>
         </table>
+        <p>Total Guesses: {props.guessedWords && props.guessedWords.length}</p>
       </div>
     );
   };

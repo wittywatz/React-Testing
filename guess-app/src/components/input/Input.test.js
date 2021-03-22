@@ -81,18 +81,34 @@ describe('update state via redux props', () => {
 });
 
 describe('renders action creators', () => {
-  let mockGuessWord = jest.fn();
-  const wrapper = shallow(<UnconnectedInput guessWord={mockGuessWord} />);
-  wrapper.setState({ currentGuess: 'train' });
-  const findButton = findByTestAttr(wrapper, 'component-submit-button');
   test('verify that the guessWord action creator is called on click', () => {
+    let mockGuessWord = jest.fn();
+    const wrapper = shallow(<UnconnectedInput guessWord={mockGuessWord} />);
+    wrapper.setState({ currentGuess: 'train' });
+    const findButton = findByTestAttr(wrapper, 'component-submit-button');
     findButton.simulate('click', { preventDefault() {} });
     const mockfnCount = mockGuessWord.mock.calls.length;
     expect(mockfnCount).toBe(1);
   });
-  test('calls guessWord action creator with input argument', () => {
+});
+
+test('calls guessWord action creator with input argument', () => {
+  let mockGuessWord = jest.fn();
+  const wrapper = shallow(<UnconnectedInput guessWord={mockGuessWord} />);
+  wrapper.setState({ currentGuess: 'train' });
+  const findButton = findByTestAttr(wrapper, 'component-submit-button');
+  findButton.simulate('click', { preventDefault() {} });
+  const mockfnCount = mockGuessWord.mock.calls[0][0];
+  expect(mockfnCount).toBe('train');
+});
+describe('verify input clears out', () => {
+  test('check that state is cleared', () => {
+    let mockGuessWord = jest.fn();
+    const wrapper = shallow(<UnconnectedInput guessWord={mockGuessWord} />);
+    wrapper.setState({ currentGuess: 'train' });
+    const findButton = findByTestAttr(wrapper, 'component-submit-button');
     findButton.simulate('click', { preventDefault() {} });
-    const mockfnCount = mockGuessWord.mock.calls[0][0];
-    expect(mockfnCount).toBe('train');
+    const newState = wrapper.state('currentGuess');
+    expect(newState).toBe('');
   });
 });
