@@ -2,7 +2,7 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import { storeFactory } from '../../utils/storeFactory';
 import { findByTestAttr } from '../../utils/findByTestAttr';
-import Input from './Input';
+import Input, { Input as UnconnectedInput } from './Input';
 
 //Before you test components receiving props from redux, ensure to set up Redux first
 /**
@@ -77,5 +77,22 @@ describe('update state via redux props', () => {
     const wrapper = setup();
     const guessWordProp = wrapper.instance().props.guessWord;
     expect(guessWordProp).toBeInstanceOf(Function);
+  });
+});
+
+describe('renders action creators', () => {
+  let mockGuessWord = jest.fn();
+  const wrapper = shallow(<UnconnectedInput guessWord={mockGuessWord} />);
+  wrapper.setState({ currentGuess: 'train' });
+  const findButton = findByTestAttr(wrapper, 'component-submit-button');
+  test('verify that the guessWord action creator is called on click', () => {
+    findButton.simulate('click', { preventDefault() {} });
+    const mockfnCount = mockGuessWord.mock.calls.length;
+    expect(mockfnCount).toBe(1);
+  });
+  test('calls guessWord action creator with input argument', () => {
+    findButton.simulate('click', { preventDefault() {} });
+    const mockfnCount = mockGuessWord.mock.calls[0][0];
+    expect(mockfnCount).toBe('train');
   });
 });
