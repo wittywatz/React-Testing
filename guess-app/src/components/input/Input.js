@@ -2,7 +2,10 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 export class Input extends Component {
-  renderForm = () => {
+  renderForm = (success) => {
+    if (success) {
+      return null;
+    }
     return (
       <form className={'form-inline'}>
         <input
@@ -24,10 +27,12 @@ export class Input extends Component {
   render() {
     return (
       <div data-test="component-input">
-        {this.props.success ? null : this.renderForm()}
+        {this.renderForm(this.props.success)}
       </div>
     );
   }
 }
-const mapStateToProps = ({ success }) => ({ success });
+const mapStateToProps = ({ success }) => {
+  return { success };
+};
 export default connect(mapStateToProps)(Input);
