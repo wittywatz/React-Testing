@@ -53,7 +53,7 @@ describe('guessWord action dispatcher', () => {
     test('updates state correctly for unsuccessful guesses', () => {
       store.dispatch(guessWord(unsuccessfulGuess));
       const newState = store.getState();
-      console.log(newState);
+      // console.log(newState);
       const expectedState = {
         secretWord,
         success: false,
@@ -71,7 +71,7 @@ describe('guessWord action dispatcher', () => {
     test('updates state correctly for successful guesses', () => {
       store.dispatch(guessWord(secretWord));
       const newState = store.getState();
-      console.log(newState);
+      // console.log(newState);
       const expectedState = {
         secretWord,
         success: true,
