@@ -2,8 +2,9 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import { storeFactory } from '../../utils/storeFactory';
 import { findByTestAttr } from '../../utils/findByTestAttr';
-import { Input } from './Input';
+import Input from './Input';
 
+//Before you test components receiving props from redux, ensure to set up Redux first
 /**
  * Factory function to create shallow wrapper for CongratsComponent
  * @function setup
@@ -12,10 +13,11 @@ import { Input } from './Input';
  * @returns {ShallowWrapper}
  */
 const setup = (initialState = {}) => {
-  // const store = storeFactory(initialState);
-  // store = { store };
-  const wrapper = shallow(<Input {...initialState} />);
-  // .dive()
+  const store = storeFactory(initialState);
+
+  const wrapper = shallow(<Input store={store} />)
+    .dive()
+    .dive();
   // .dive();
   // console.log(wrapper.debug());
   return wrapper;
@@ -62,4 +64,18 @@ describe('renders', () => {
   });
 });
 
-describe('update state', () => {});
+describe('update state via redux props', () => {
+  test('renders success as a prop', () => {
+    const initialState = { success: true };
+    const wrapper = setup(initialState);
+    const successProp = wrapper.instance().props.success;
+    // console.log(successProp);
+    expect(successProp).toBe(initialState.success);
+  });
+
+  test('guessword action creator is a function prop', () => {
+    const wrapper = setup();
+    const guessWordProp = wrapper.instance().props.guessWord;
+    expect(guessWordProp).toBeInstanceOf(Function);
+  });
+});

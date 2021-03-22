@@ -4,6 +4,7 @@ import { storeFactory } from '../../utils/storeFactory';
 
 describe('get secret word creator', () => {
   moxios.install();
+
   test('adds response word to state', async () => {
     const secretWord = 'party';
     const store = storeFactory();
